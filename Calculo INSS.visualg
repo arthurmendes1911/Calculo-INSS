@@ -1,0 +1,58 @@
+algoritmo "Calculo INSS"
+
+var
+   salarioBruto: real
+   salarioLiquido: real
+   descontoINSS: real
+   aliquota: real
+   deducao: real
+   baseCalculo: real
+
+inicio
+
+   escreval("INSIRA SEU SALÁRIO SEM O DESCONTO DO INSS")
+   leia(salarioBruto)
+
+   se salarioBruto <= 0 entao
+      escreval("VALOR INVÁLIDO. DIGITE UM SALÁRIO MAIOR QUE ZERO.")
+   senao
+      // O teto limita a base de cálculo
+      baseCalculo <- salarioBruto
+      se salarioBruto > 8475.55 entao
+         baseCalculo <- 8475.55
+      fimse
+
+      // Define a alíquota e a dedução da faixa
+      se baseCalculo <= 1621 entao
+         aliquota <- 0.075
+         deducao <- 0
+      senao
+         se baseCalculo <= 2902.84 entao
+            aliquota <- 0.09
+            deducao <- 24.32
+         senao
+               se baseCalculo <= 4354.27 entao
+                  aliquota <- 0.12
+                  deducao <- 111.40
+               senao
+                  aliquota <- 0.14
+                  deducao <- 198.49
+               fimse
+         fimse
+      fimse
+
+      descontoINSS <- (baseCalculo * aliquota) - deducao
+      salarioLiquido <- salarioBruto - descontoINSS
+
+      escreval("SEU SALÁRIO BRUTO: R$ ", salarioBruto)
+      escreval("DESCONTO INSS: R$ ", descontoINSS)
+      escreval("SEU SALÁRIO COM DESCONTO DO INSS: R$ ", salarioLiquido)
+      escreval("ALÍQUOTA APLICADA: ", aliquota * 100, "%")
+      escreval("DEDUÇÃO DA FAIXA: R$ ", deducao)
+
+      se salarioBruto > 8475.55 entao
+         escreval("SEU SALÁRIO ULTRAPASSA O TETO DO INSS, ENTÃO O DESCONTO FOI LIMITADO AO VALOR MÁXIMO.")
+      fimse
+   fimse
+
+fimalgoritmo
